@@ -1,0 +1,133 @@
+.contenedor {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 26px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2, h3 {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* Estilos para el formulario */
+.formulario__pago {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formulario__campo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+input[type="radio"] {
+    accent-color: #007bff;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+#seccion-tarjeta,
+#seccion-paypal,
+#seccion-transferencia {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Estilos para el botón de pago */
+.formulario__submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.formulario__submit:hover {
+    background-color: #218838;
+}
+
+@media (max-width: 600px) {
+    .contenedor {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h2, h3 {
+        font-size: 18px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+        font-size: 14px;
+    }
+
+    .formulario__submit {
+        font-size: 16px;
+    }
+}

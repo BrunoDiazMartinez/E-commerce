@@ -1,0 +1,42 @@
+/* NavBar.css */
+.navegacion {
+    background-color: #282c34;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
+  
+  .navegacion__enlace {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .navegacion__enlace:hover {
+    background-color: #61dafb;
+    border-radius: 5px;
+  }
+  
+  .boton-carrito {
+    position: relative;
+    display: inline-block;
+    color: white;
+  }
+  
+  .boton-carrito svg {
+    fill: white;
+  }
+  
+  .boton-carrito:hover svg {
+    fill: #61dafb;
+  }
+  
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+  

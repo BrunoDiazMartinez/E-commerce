@@ -1,0 +1,42 @@
+/* ProductGrid.css */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 20px;                                                
+  padding: 20px;
+  background-color: #f4f4f4;                             
+}
+
+.product-card {
+  height: auto;
+  background-color: #ffffff;           
+  border: 1px solid #ddd;            
+  border-radius: 15px;                
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+  padding: 20px;                            
+  text-align: center;                      
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);           
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);      
+}
+
+.product-card img {
+  max-width: auto;                 
+  height: 150px;         
+  border-radius: 10px;    
+  margin-bottom: 10px
+}
+
+.product-card h2 {
+  font-size: 1.2rem;      
+  color: #333;            
+  margin: 10px 0;
+}
+
+.product-card p {
+  font-size: 1rem;       
+  color: #888;        
+}

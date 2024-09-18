@@ -1,0 +1,91 @@
+.contenedor {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+main {
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Estilos para el formulario */
+.formulario__registro {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 16px;
+  color: #555;
+  margin: 10px 0 5px;
+  text-align: left;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.registro__button {
+  text-align: center;
+}
+
+.registro__submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.registro__submit:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 500px) {
+  .contenedor {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    font-size: 14px;
+  }
+
+  .registro__submit {
+    font-size: 16px;
+  }
+}
