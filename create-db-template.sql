@@ -30,7 +30,9 @@ CREATE TABLE carritos (
     estado ENUM('activo', 'pagado') DEFAULT 'activo',  -- Para manejar el estado del carrito
     FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
 );
-ALTER TABLE carritos MODIFY cliente_id INT DEFAULT NULL;
+
+ALTER TABLE carritos MODIFY cliente_id INT NULL;
+
 -- Tabla de detalles del carrito (productos en el carrito)
 CREATE TABLE carrito_detalle (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,6 +49,36 @@ CREATE TABLE metodos_pago (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tipo_pago ENUM('tarjeta', 'paypal', 'transferencia') NOT NULL
 );
+
+CREATE TABLE tarjeta_pago (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    metodo_pago_id INT,
+    nombre_titular VARCHAR(100) NOT NULL,
+    numero_tarjeta VARCHAR(16) NOT NULL,
+    fecha_expiracion VARCHAR(5) NOT NULL,
+    codigo_seguridade VARCHAR(4) NOT NULL,
+    monto DECIMAL(10, 2) NOT NULL, -- Monto para la transacción
+    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_pago(id)
+);
+
+CREATE TABLE paypal_pago (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    metodo_pago_id INT,
+    correo_paypal VARCHAR(100) NOT NULL,
+    monto DECIMAL(10, 2) NOT NULL, -- Monto para la transacción
+    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_pago(id)
+);
+
+CREATE TABLE transferencia_pago (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    metodo_pago_id INT,
+    banco VARCHAR(100) NOT NULL,
+    numero_cuenta VARCHAR(30) NOT NULL,
+    nombre_titular VARCHAR(100) NOT NULL,
+    monto DECIMAL(10, 2) NOT NULL, -- Monto para la transacción
+    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_pago(id)
+);
+
 
 -- Tabla de órdenes de pago (creada cuando el cliente paga)
 CREATE TABLE ordenes_pago (
@@ -131,3 +163,28 @@ INSERT INTO productos (name, price, image, link, type, category) VALUES
 ('Playera Negra Estampada', 299, 'img/img66.jpg', 'productos.html', 'playera', 'hombre'),
 ('Playera Negra Estampada', 299, 'img/img67.webp', 'productos.html', 'playera', 'hombre'),
 ('Playera Negra/Azul', 209, 'img/img68.jpg', 'productos.html', 'playera', 'hombre');
+
+
+INSERT INTO clientes (nombre, apellido, email, password) VALUES
+('Juan', 'Pérez', 'juan.perez@example.com', 'password123'),
+('María', 'García', 'maria.garcia@example.com', 'password456'),
+('Carlos', 'López', 'carlos.lopez@example.com', 'password789'),
+('Ana', 'Martínez', 'ana.martinez@example.com', 'password321'),
+('Luis', 'Hernández', 'luis.hernandez@example.com', 'password654');
+
+
+-- Insertar tipos de pago
+INSERT INTO metodos_pago (tipo_pago) VALUES ('tarjeta'), ('paypal'), ('transferencia');
+
+-- Insertar detalles para tarjeta
+INSERT INTO tarjeta_pago (metodo_pago_id, nombre_titular, numero_tarjeta, fecha_expiracion, codigo_seguridade, monto) 
+VALUES (1, 'Juan Pérez', '1234567812345678', '12-31', '123', 100.50);
+
+-- Insertar detalles para PayPal
+INSERT INTO paypal_pago (metodo_pago_id, correo_paypal, monto) 
+VALUES (2, 'juan.perez@example.com', 50.75);
+
+-- Insertar detalles para transferencia
+INSERT INTO transferencia_pago (metodo_pago_id, banco, numero_cuenta, nombre_titular, monto) 
+VALUES (3, 'Banco Ejemplo', '1234567890', 'Juan Pérez', 200.00);
+

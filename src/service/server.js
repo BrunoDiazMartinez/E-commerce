@@ -42,144 +42,99 @@ app.get('/productos', (req, res) => {
     });
 });
 
-// Ruta para obtener un producto específico por ID
-app.get('/productos/:id', (req, res) => {
-    const { id } = req.params;
-    db.query('SELECT * FROM productos WHERE id = ?', [id], (err, results) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-            return;
+// Endpoint para validar el pago
+app.post('/validar-pago', (req, res) => {
+    const { metodo, ...datos } = req.body;
+
+    if (metodo === 'tarjeta') {
+        const { nombre, numeroTarjeta, fechaExpiracion, cvv } = datos;
+
+        // Verificar que todos los campos estén completos
+        if (!nombre || !numeroTarjeta || !fechaExpiracion || !cvv) {
+            return res.status(400).json({ valido: false, mensaje: 'Todos los campos son requeridos para el pago con tarjeta.' });
         }
-        if (results.length === 0) {
-            res.status(404).json({ error: 'Producto no encontrado' });
-            return;
-        }
-        const producto = results[0];
-        producto.price = parseFloat(producto.price);
-        res.json(producto);
-    });
-});
 
-// server.js
-
-// Agregar producto al carrito
-app.post('/carrito', (req, res) => {
-    const { productoId, cantidad, carritoId } = req.body;
-
-    let clienteId = null; // Asignar clienteId como NULL si no está presente en el request
-
-    if (!carritoId) {
-        db.query('INSERT INTO carritos (cliente_id, fecha_creacion) VALUES (?, NOW())', [clienteId], (err, result) => {
-            if (err) {
-                console.error('Error creando carrito:', err);
-                res.status(500).json({ error: err.message });
-                return;
-            }
-            const nuevoCarritoId = result.insertId;
-            db.query('INSERT INTO carrito_detalle (carrito_id, producto_id, cantidad) VALUES (?, ?, ?)', [nuevoCarritoId, productoId, cantidad], (err) => {
-                if (err) {
-                    console.error('Error agregando producto al carrito:', err);
-                    res.status(500).json({ error: err.message });
-                    return;
+        // Consulta para validar la tarjeta
+        db.query('SELECT * FROM tarjeta_pago WHERE nombre_titular = ? AND numero_tarjeta = ? AND fecha_expiracion = ? AND codigo_seguridade = ?',
+            [nombre, numeroTarjeta, fechaExpiracion, cvv],
+            (error, results) => {
+                if (error) {
+                    console.error('Error en la consulta de tarjeta:', error);
+                    return res.status(500).json({ valido: false, mensaje: 'Error en la base de datos.' });
                 }
-                res.status(201).json({ carritoId: nuevoCarritoId, message: 'Producto agregado al carrito' });
-            });
-        });
-    } else {
-        db.query('INSERT INTO carrito_detalle (carrito_id, producto_id, cantidad) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE cantidad = cantidad + VALUES(cantidad)', [carritoId, productoId, cantidad], (err) => {
-            if (err) {
-                console.error('Error agregando producto al carrito:', err);
-                res.status(500).json({ error: err.message });
-                return;
+                // Si se encuentra la tarjeta válida
+                if (results.length > 0) {
+                    return res.json({ valido: true });
+                } else {
+                    return res.json({ valido: false, mensaje: 'Datos de tarjeta incorrectos.' });
+                }
             }
-            res.status(201).json({ message: 'Producto agregado al carrito' });
+        );
+
+    } else if (metodo === 'paypal') {
+        const { correoPaypal } = datos;
+
+        // Verificar que todos los campos estén completos
+        if (!correoPaypal) {
+            return res.status(400).json({ valido: false, mensaje: 'El correo de PayPal es requerido.' });
+        }
+
+        // Consulta para validar el correo de PayPal
+        db.query('SELECT * FROM paypal WHERE correo = ?', [correoPaypal], (error, results) => {
+            if (error) {
+                console.error('Error en la consulta de PayPal:', error);
+                return res.status(500).json({ valido: false, mensaje: 'Error en la base de datos.' });
+            }
+            // Si se encuentra el correo de PayPal
+            if (results.length > 0) {
+                return res.json({ valido: true });
+            } else {
+                return res.json({ valido: false, mensaje: 'Correo de PayPal incorrecto.' });
+            }
         });
+
+    } else if (metodo === 'transferencia') {
+        const { numeroCuenta } = datos;
+
+        // Verificar que todos los campos estén completos
+        if (!numeroCuenta) {
+            return res.status(400).json({ valido: false, mensaje: 'El número de cuenta es requerido.' });
+        }
+
+        // Consulta para validar la transferencia
+        db.query('SELECT * FROM transferencias WHERE numero_cuenta = ?', [numeroCuenta], (error, results) => {
+            if (error) {
+                console.error('Error en la consulta de transferencia:', error);
+                return res.status(500).json({ valido: false, mensaje: 'Error en la base de datos.' });
+            }
+            // Si se encuentra la transferencia válida
+            if (results.length > 0) {
+                return res.json({ valido: true });
+            } else {
+                return res.json({ valido: false, mensaje: 'Número de cuenta de transferencia incorrecto.' });
+            }
+        });
+
+    } else {
+        res.status(400).json({ valido: false, mensaje: 'Método de pago no válido.' });
     }
 });
 
 
-// Obtener productos del carrito
-app.get('/carrito/:carritoId', (req, res) => {
-    const { carritoId } = req.params;
-    db.query(`
-        SELECT p.*, cp.cantidad 
-        FROM carrito_detalle cp
-        JOIN productos p ON cp.producto_id = p.id
-        WHERE cp.carrito_id = ?
-    `, [carritoId], (err, results) => {
+// Ruta para validar usuario
+app.post('/validar-usuario', (req, res) => {
+    const { email, password } = req.body;
+
+    db.query('SELECT * FROM clientes WHERE email = ? AND password = ?', [email, password], (err, results) => {
         if (err) {
-            console.error('Error fetching cart:', err);
-            res.status(500).json({ error: err.message });
-            return;
+            console.error('Error al validar usuario:', err);
+            return res.status(500).json({ error: 'Error al validar usuario' });
         }
-        res.json(results);
-    });
-});
-
-// Modificar cantidad del producto en el carrito
-app.put('/carrito/:carritoId/producto/:productoId', (req, res) => {
-    const { carritoId, productoId } = req.params;
-    const { cantidad } = req.body;
-
-    db.query('UPDATE carrito_detalle SET cantidad = ? WHERE carrito_id = ? AND producto_id = ?', [cantidad, carritoId, productoId], (err) => {
-        if (err) {
-            console.error('Error updating quantity:', err);
-            res.status(500).json({ error: err.message });
-            return;
+        if (results.length > 0) {
+            res.json({ existe: true });
+        } else {
+            res.json({ existe: false });
         }
-        res.json({ message: 'Cantidad actualizada' });
-    });
-});
-
-// Eliminar producto del carrito
-app.delete('/carrito/:carritoId/producto/:productoId', (req, res) => {
-    const { carritoId, productoId } = req.params;
-
-    db.query('DELETE FROM carrito_detalle WHERE carrito_id = ? AND producto_id = ?', [carritoId, productoId], (err, result) => {
-        if (err) {
-            console.error('Error removing product from cart:', err);
-            res.status(500).json({ error: 'Error al eliminar el producto del carrito' });
-            return;
-        }
-        res.status(200).json({ message: 'Producto eliminado del carrito' });
-    });
-});
-
-// Vaciar carrito
-app.delete('/carrito/:carritoId', (req, res) => {
-    const { carritoId } = req.params;
-
-    db.query('DELETE FROM carrito_detalle WHERE carrito_id = ?', [carritoId], (err) => {
-        if (err) {
-            console.error('Error clearing cart:', err);
-            res.status(500).json({ error: err.message });
-            return;
-        }
-        res.json({ message: 'Carrito vaciado' });
-    });
-});
-
-// Finalizar la compra
-app.post('/compra', (req, res) => {
-    const { carritoId, clienteId, metodoPagoId } = req.body;
-
-    // Crear una nueva orden de pago
-    db.query('INSERT INTO ordenes_pago (carrito_id, cliente_id, metodo_pago_id, fecha, total) SELECT carrito_id, ?, ?, NOW(), SUM(p.price * cp.cantidad) FROM carrito_detalle cp JOIN productos p ON cp.producto_id = p.id WHERE carrito_id = ? GROUP BY carrito_id', [clienteId, metodoPagoId, carritoId], (err, result) => {
-        if (err) {
-            console.error('Error creating payment order:', err);
-            res.status(500).json({ error: err.message });
-            return;
-        }
-
-        // Vaciar el carrito
-        db.query('DELETE FROM carrito_detalle WHERE carrito_id = ?', [carritoId], (err) => {
-            if (err) {
-                console.error('Error clearing cart after purchase:', err);
-                res.status(500).json({ error: err.message });
-                return;
-            }
-            res.json({ message: 'Compra realizada con éxito' });
-        });
     });
 });
 

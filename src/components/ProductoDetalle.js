@@ -1,29 +1,12 @@
-// src/components/ProductoDetalle.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 function ProductoDetalle() {
-  const { id } = useParams(); // Obtener el ID del producto desde la URL
+  const { id } = useParams();
   const [producto, setProducto] = useState(null);
   const [cantidad, setCantidad] = useState(1);
   const [talla, setTalla] = useState("");
-
-  useEffect(() => {
-    // Verificar si existe un carritoId en el localStorage
-    let carritoId = localStorage.getItem('carritoId');
-    if (!carritoId) {
-      // Si no existe, crear un nuevo carrito
-      axios.post('http://localhost:5000/carrito', { carritoId: null })
-        .then(response => {
-          carritoId = response.data.carritoId;
-          localStorage.setItem('carritoId', carritoId);
-        })
-        .catch(error => {
-          console.error('Error creando un nuevo carrito:', error);
-        });
-    }
-  }, []);
 
   useEffect(() => {
     axios.get(`http://localhost:5000/productos/${id}`)
@@ -41,25 +24,30 @@ function ProductoDetalle() {
 
   const handleAgregarAlCarrito = (event) => {
     event.preventDefault();
-
-    const carritoId = localStorage.getItem('carritoId');
-
-    if (!producto) {
-      console.error('Producto no disponible.');
+    
+    if (!producto || !talla) {
+      alert('Selecciona una talla.');
       return;
     }
 
-    axios.post('http://localhost:5000/carrito', {
-      productoId: producto.id,
-      cantidad,
-      carritoId
-    })
-      .then(response => {
-        alert('Producto agregado al carrito');
-      })
-      .catch(error => {
-        console.error('Error adding product to cart:', error);
+    const carritoLocalStorage = JSON.parse(localStorage.getItem('carrito')) || [];
+    const productoExistente = carritoLocalStorage.find(p => p.id === producto.id && p.talla === talla);
+
+    if (productoExistente) {
+      productoExistente.cantidad += cantidad;
+    } else {
+      carritoLocalStorage.push({
+        id: producto.id,
+        nombre: producto.name,
+        precio: producto.price,
+        imagen: producto.image_url,
+        talla,
+        cantidad
       });
+    }
+
+    localStorage.setItem('carrito', JSON.stringify(carritoLocalStorage));
+    alert('Producto agregado al carrito');
   };
 
   return (

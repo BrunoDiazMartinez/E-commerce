@@ -26,11 +26,6 @@ const RegistroCliente = () => {
 
     return (
         <div className="contenedor">
-            <header className="header">
-                <a href="/">
-                    <img className="header__logo" src="/img/logo.png" alt="logoTipo" />
-                </a>
-            </header>
             <main>
                 <h1>Registro de Nuevo Cliente</h1>
                 <form className="formulario__registro" onSubmit={handleSubmit}>
@@ -79,9 +74,6 @@ const RegistroCliente = () => {
                     </div>
                 </form>
             </main>
-            <footer className="footer">
-                <p className="footer__texto">Todos los derechos reservados. @Bruno_tz</p>
-            </footer>
         </div>
     );
 };

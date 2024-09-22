@@ -9,30 +9,67 @@ const FormaPago = () => {
         setFormaPago(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (formaPago === 'tarjeta') {
-            const nombre = document.getElementById('nombre').value;
-            const numeroTarjeta = document.getElementById('numero-tarjeta').value;
-            const fechaExpiracion = document.getElementById('fecha-expiracion').value;
-            const cvv = document.getElementById('cvv').value;
+        // Validar que se ha seleccionado un método de pago
+        if (!formaPago) {
+            alert('Por favor, selecciona un método de pago.');
+            return;
+        }
 
-            if (!nombre || !numeroTarjeta || !fechaExpiracion || !cvv) {
+        // Datos a enviar
+        let datosPago = {};
+        if (formaPago === 'tarjeta') {
+            datosPago = {
+                metodo: formaPago,
+                nombre: document.getElementById('nombre').value,
+                numeroTarjeta: document.getElementById('numero-tarjeta').value,
+                fechaExpiracion: document.getElementById('fecha-expiracion').value,
+                cvv: document.getElementById('cvv').value,
+            };
+            if (!datosPago.nombre || !datosPago.numeroTarjeta || !datosPago.fechaExpiracion || !datosPago.cvv) {
                 alert('Por favor, completa todos los campos de la tarjeta.');
                 return;
             }
         } else if (formaPago === 'paypal') {
-            const correoPaypal = document.getElementById('correo-paypal').value;
-            if (!correoPaypal) {
+            datosPago = {
+                metodo: formaPago,
+                correoPaypal: document.getElementById('correo-paypal').value,
+            };
+            if (!datosPago.correoPaypal) {
                 alert('Por favor, introduce tu correo de PayPal.');
                 return;
             }
+        } else if (formaPago === 'transferencia') {
+            datosPago = {
+                metodo: formaPago,
+                // Agrega más datos si es necesario para validación
+            };
         }
 
-        alert('Pago realizado con éxito');
-        // Redirigir a la página de confirmación después del pago
-        navigate('/confirmacion'); // Navegación a página de confirmación
+        // Validar datos en la base de datos
+        try {
+            const response = await fetch('http://localhost:5000/validar-pago', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(datosPago),
+            });
+
+            const resultado = await response.json();
+
+            if (resultado.valido) {
+                alert('Pago realizado con éxito');
+                navigate('/confirmacion'); // Redirigir a la página de confirmación
+            } else {
+                alert('Los datos de pago son incorrectos.');
+            }
+        } catch (error) {
+            console.error('Error al validar el pago:', error);
+            alert('Error en la validación del pago. Intenta de nuevo.');
+        }
     };
 
     return (

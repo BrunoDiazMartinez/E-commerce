@@ -1,73 +1,53 @@
-// src/components/Carrito.js
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 function Carrito() {
   const [productos, setProductos] = useState([]);
   const [total, setTotal] = useState(0);
-  const [carritoId, setCarritoId] = useState(localStorage.getItem('carritoId') || null);
 
   useEffect(() => {
-    if (carritoId) {
-      axios.get(`http://localhost:5000/carrito/${carritoId}`)
-        .then(response => {
-          const productos = response.data;
-          setProductos(productos);
+    const carritoLocalStorage = JSON.parse(localStorage.getItem('carrito')) || [];
+    setProductos(carritoLocalStorage);
 
-          const nuevoTotal = productos.reduce((acc, producto) => acc + (producto.price * producto.cantidad), 0);
-          setTotal(nuevoTotal);
-        })
-        .catch(error => {
-          console.error('Error fetching cart products:', error);
-        });
-    }
-  }, [carritoId]);
+    const nuevoTotal = carritoLocalStorage.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0);
+    setTotal(nuevoTotal);
+  }, []);
 
-  const handleModificarCantidad = (productoId, cantidad) => {
-    axios.put(`http://localhost:5000/carrito/${carritoId}/producto/${productoId}`, { cantidad })
-      .then(() => {
-        setProductos(productos.map(p => p.id === productoId ? { ...p, cantidad } : p));
-      })
-      .catch(error => {
-        console.error('Error modifying quantity:', error);
-      });
+  const handleModificarCantidad = (productoId, talla, nuevaCantidad) => {
+    const carritoActualizado = productos.map(p => 
+      p.id === productoId && p.talla === talla ? { ...p, cantidad: nuevaCantidad } : p
+    );
+    setProductos(carritoActualizado);
+    localStorage.setItem('carrito', JSON.stringify(carritoActualizado));
+    recalcularTotal(carritoActualizado);
   };
 
-  const handleEliminarProducto = (productoId) => {
-    axios.delete(`http://localhost:5000/carrito/${carritoId}/producto/${productoId}`)
-      .then(() => {
-        setProductos(productos.filter(p => p.id !== productoId));
-      })
-      .catch(error => {
-        console.error('Error removing product from cart:', error);
-      });
+  const handleEliminarProducto = (productoId, talla) => {
+    const carritoActualizado = productos.filter(p => !(p.id === productoId && p.talla === talla));
+    setProductos(carritoActualizado);
+    localStorage.setItem('carrito', JSON.stringify(carritoActualizado));
+    recalcularTotal(carritoActualizado);
+  };
+
+  const recalcularTotal = (carrito) => {
+    const nuevoTotal = carrito.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0);
+    setTotal(nuevoTotal);
   };
 
   const handleVaciarCarrito = () => {
-    axios.delete(`http://localhost:5000/carrito/${carritoId}`)
-      .then(() => {
-        setProductos([]);
-        setTotal(0);
-        localStorage.removeItem('carritoId');
-        setCarritoId(null);
-      })
-      .catch(error => {
-        console.error('Error clearing cart:', error);
-      });
+    // Vaciar el carrito en localStorage y en el estado
+    localStorage.removeItem('carrito');
+    setProductos([]);
+    setTotal(0);
   };
 
-  const handlePagar = () => {
-    const clienteId = 1; // Obtén el ID del cliente desde la sesión o el estado
-    const metodoPagoId = 1; // Obtén el método de pago desde el estado o formulario
-
-    axios.post('http://localhost:5000/compra', { carritoId, clienteId, metodoPagoId })
-      .then(() => {
-        handleVaciarCarrito();
-        alert('Compra realizada con éxito');
-      })
-      .catch(error => {
-        console.error('Error processing payment:', error);
-      });
+  const handleIrADatosCliente = () => {
+    // Validar si hay al menos un producto en el carrito
+    if (productos.length > 0) {
+      // Redirigir a la página de datos del cliente
+      window.location.href = '/datos-cliente';
+    } else {
+      alert('El carrito está vacío. Agrega productos para proceder al pago.');
+    }
   };
 
   return (
@@ -75,17 +55,18 @@ function Carrito() {
       <h1>Carrito de Compras</h1>
       <ul>
         {productos.map(producto => (
-          <li key={producto.id}>
-            {producto.name} - ${producto.price.toFixed(2)} x {producto.cantidad}
-            <button onClick={() => handleModificarCantidad(producto.id, producto.cantidad + 1)}>+</button>
-            <button onClick={() => handleModificarCantidad(producto.id, Math.max(producto.cantidad - 1, 1))}>-</button>
-            <button onClick={() => handleEliminarProducto(producto.id)}>Eliminar</button>
+          <li key={`${producto.id}-${producto.talla}`}>
+            <img src={producto.imagen} alt={producto.nombre} style={{ width: '50px' }} />
+            {producto.nombre} (Talla: {producto.talla}) - ${producto.precio.toFixed(2)} x {producto.cantidad}
+            <button onClick={() => handleModificarCantidad(producto.id, producto.talla, producto.cantidad + 1)}>+</button>
+            <button onClick={() => handleModificarCantidad(producto.id, producto.talla, Math.max(producto.cantidad - 1, 1))}>-</button>
+            <button onClick={() => handleEliminarProducto(producto.id, producto.talla)}>Eliminar</button>
           </li>
         ))}
       </ul>
       <p>Total: ${total.toFixed(2)}</p>
       <button onClick={handleVaciarCarrito}>Vaciar Carrito</button>
-      <button onClick={handlePagar}>Proceder al Pago</button>
+      <button onClick={handleIrADatosCliente}>Proceder al Pago</button>
     </div>
   );
 }

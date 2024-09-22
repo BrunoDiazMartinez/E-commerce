@@ -1,51 +1,56 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function DatosCliente() {
   const [esCliente, setEsCliente] = useState(null);
-  const [idCliente, setIdCliente] = useState('');
+  const [emailCliente, setEmailCliente] = useState('');
   const [password, setPassword] = useState('');
-  const [nombreCliente, setNombreCliente] = useState('');
-  const [apellidoCliente, setApellidoCliente] = useState('');
   const navigate = useNavigate();
-
-  const usuariosExistentes = [
-    { id: '12345', password: 'password123', nombre: 'Juan', apellido: 'Pérez' },
-    { id: '67890', password: 'password456', nombre: 'María', apellido: 'García' }
-  ];
 
   const manejarSeleccion = (e) => {
     setEsCliente(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!isValidEmail(emailCliente)) {
+      alert('Por favor, introduce un email válido.');
+      return;
+    }
     e.preventDefault();
 
     if (esCliente === 'si') {
-      const usuarioValido = usuariosExistentes.find(usuario =>
-        usuario.id === idCliente &&
-        usuario.password === password &&
-        usuario.nombre === nombreCliente &&
-        usuario.apellido === apellidoCliente
-      );
+      try {
+        const response = await axios.post('http://localhost:5000/validar-usuario', {
+          email: emailCliente,
+          password: password
+        });
 
-      if (!usuarioValido) {
-        alert('ID, contraseña, nombre o apellido incorrectos. Por favor, intenta de nuevo.');
-        return;
+        if (response.data.existe) {
+          // Si el usuario es válido, redirige a la página de pago
+          navigate('/pago');
+        } else {
+          alert('Email o contraseña incorrectos. Por favor, intenta de nuevo.');
+        }
+      } catch (error) {
+        console.error('Error al validar el usuario:', error);
+        alert('Hubo un problema al validar el usuario. Intenta de nuevo más tarde.');
       }
-
-      // Si el usuario es válido, redirige a la página de pago
-      navigate('/pago');
-    } 
+    }
   };
 
   const handleRegistro = () => {
-    // Redirige a la página de registro si elige registrarse
     navigate('/registro');
   };
 
   const handleContinuarPago = () => {
-    // Redirige a la página de pago si elige continuar sin registrarse
     navigate('/pago');
   };
 
@@ -67,11 +72,11 @@ function DatosCliente() {
 
         {esCliente === 'si' && (
           <div>
-            <label>ID Cliente</label>
+            <label>Email Cliente</label>
             <input
-              type="text"
-              value={idCliente}
-              onChange={(e) => setIdCliente(e.target.value)}
+              type="email"
+              value={emailCliente}
+              onChange={(e) => setEmailCliente(e.target.value)}
               required
             />
             <label>Password</label>
@@ -79,20 +84,6 @@ function DatosCliente() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <label>Nombre</label>
-            <input
-              type="text"
-              value={nombreCliente}
-              onChange={(e) => setNombreCliente(e.target.value)}
-              required
-            />
-            <label>Apellido</label>
-            <input
-              type="text"
-              value={apellidoCliente}
-              onChange={(e) => setApellidoCliente(e.target.value)}
               required
             />
             <button type="submit">Continuar al Pago</button>
@@ -112,4 +103,3 @@ function DatosCliente() {
 }
 
 export default DatosCliente;
-
