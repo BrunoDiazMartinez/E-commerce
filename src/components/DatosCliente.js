@@ -17,6 +17,16 @@ function DatosCliente() {
     return regex.test(email);
   };
 
+  // Generar número de orden aleatorio en formato hexadecimal
+  const generarNumeroOrden = () => {
+    return Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0');
+  };
+
+  // Guardar información del cliente en localStorage
+  const guardarInformacionCliente = (email, numeroOrden) => {
+    localStorage.setItem('cliente', JSON.stringify({ email, numeroOrden }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -24,7 +34,6 @@ function DatosCliente() {
       alert('Por favor, introduce un email válido.');
       return;
     }
-    e.preventDefault();
 
     if (esCliente === 'si') {
       try {
@@ -34,7 +43,13 @@ function DatosCliente() {
         });
 
         if (response.data.existe) {
-          // Si el usuario es válido, redirige a la página de pago
+          // Generar número de orden
+          const numeroOrden = generarNumeroOrden();
+
+          // Guardar la información del cliente y número de orden en localStorage
+          guardarInformacionCliente(emailCliente, numeroOrden);
+
+          // Redirigir a la página de pago
           navigate('/pago');
         } else {
           alert('Email o contraseña incorrectos. Por favor, intenta de nuevo.');
@@ -51,6 +66,16 @@ function DatosCliente() {
   };
 
   const handleContinuarPago = () => {
+    // Generar número de orden
+    const numeroOrden = generarNumeroOrden();
+
+    // Crear un usuario provisional en el formato "User_#deorden"
+    const usuarioProvisional = `User_${numeroOrden}`;
+
+    // Guardar el usuario provisional en el localStorage
+    localStorage.setItem('cliente', JSON.stringify({ usuario: usuarioProvisional, numeroOrden }));
+    console.log(usuarioProvisional)
+    // Redirigir a la página de pago
     navigate('/pago');
   };
 
@@ -94,7 +119,7 @@ function DatosCliente() {
           <div id="opciones-no-cliente">
             <h2>No eres cliente. ¿Qué deseas hacer?</h2>
             <button onClick={handleRegistro}>Registrarme</button>
-            <button onClick={handleContinuarPago}>Continuar sin registrarme</button>
+            <button type="button" onClick={handleContinuarPago}>Continuar sin registrarme</button>
           </div>
         )}
       </form>

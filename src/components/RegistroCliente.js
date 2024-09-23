@@ -8,7 +8,7 @@ const RegistroCliente = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validar los campos del formulario
@@ -17,11 +17,28 @@ const RegistroCliente = () => {
             return;
         }
 
-        // Guardar los datos del cliente (opcional: puedes conectarlo con el backend o localStorage)
-        localStorage.setItem('cliente-nuevo', JSON.stringify({ nombre, apellido, email }));
+        try {
+            // Enviar los datos del cliente al backend
+            const response = await fetch('http://localhost:5000/registrar-cliente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nombre, apellido, email, password }),
+            });
 
-        // Redirigir a la página de pago
-        navigate('/forma-pago');  // Ruta a la página de pago
+            const data = await response.json();
+
+            if (data.success) {
+                // Registro exitoso, redirigir a la página de pago
+                navigate('/pago');  // Cambiar a la ruta correcta para el pago
+            } else {
+                // Mostrar un mensaje de error si el registro falla
+                alert('Error al registrar el cliente: ' + data.message);
+            }
+        } catch (error) {
+            alert('Error al conectar con el servidor: ' + error.message);
+        }
     };
 
     return (

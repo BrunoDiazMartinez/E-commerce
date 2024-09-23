@@ -42,6 +42,24 @@ app.get('/productos', (req, res) => {
     });
 });
 
+// Ruta para obtener un producto específico por ID
+app.get('/productos/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('SELECT * FROM productos WHERE id = ?', [id], (err, results) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        if (results.length === 0) {
+            res.status(404).json({ error: 'Producto no encontrado' });
+            return;
+        }
+        const producto = results[0];
+        producto.price = parseFloat(producto.price);
+        res.json(producto);
+    });
+});
+
 // Endpoint para validar el pago
 app.post('/validar-pago', (req, res) => {
     const { metodo, ...datos } = req.body;
@@ -80,7 +98,7 @@ app.post('/validar-pago', (req, res) => {
         }
 
         // Consulta para validar el correo de PayPal
-        db.query('SELECT * FROM paypal WHERE correo = ?', [correoPaypal], (error, results) => {
+        db.query('SELECT * FROM paypal_pago WHERE correo_paypal = ?', [correoPaypal], (error, results) => {
             if (error) {
                 console.error('Error en la consulta de PayPal:', error);
                 return res.status(500).json({ valido: false, mensaje: 'Error en la base de datos.' });
@@ -94,28 +112,11 @@ app.post('/validar-pago', (req, res) => {
         });
 
     } else if (metodo === 'transferencia') {
-        const { numeroCuenta } = datos;
-
-        // Verificar que todos los campos estén completos
-        if (!numeroCuenta) {
-            return res.status(400).json({ valido: false, mensaje: 'El número de cuenta es requerido.' });
-        }
-
-        // Consulta para validar la transferencia
-        db.query('SELECT * FROM transferencias WHERE numero_cuenta = ?', [numeroCuenta], (error, results) => {
-            if (error) {
-                console.error('Error en la consulta de transferencia:', error);
-                return res.status(500).json({ valido: false, mensaje: 'Error en la base de datos.' });
-            }
-            // Si se encuentra la transferencia válida
-            if (results.length > 0) {
-                return res.json({ valido: true });
-            } else {
-                return res.json({ valido: false, mensaje: 'Número de cuenta de transferencia incorrecto.' });
-            }
-        });
+        // No realizar ninguna validación, simplemente indicar que es válido
+        return res.json({ valido: true, mensaje: 'Pago por transferencia aceptado.' });
 
     } else {
+        // Para cualquier otro método no válido
         res.status(400).json({ valido: false, mensaje: 'Método de pago no válido.' });
     }
 });
@@ -137,6 +138,41 @@ app.post('/validar-usuario', (req, res) => {
         }
     });
 });
+
+//Ruta para registrar usuario nuevo
+app.post('/registrar-cliente', (req, res) => {
+    const { nombre, apellido, email, password } = req.body;
+
+    // Validar que los campos no estén vacíos
+    if (!nombre || !apellido || !email || !password) {
+        return res.status(400).json({ success: false, message: 'Por favor, completa todos los campos.' });
+    }
+
+    // Verificar si ya existe un cliente con el mismo email
+    const sqlCheck = 'SELECT * FROM clientes WHERE email = ?';
+    db.query(sqlCheck, [email], (checkError, results) => {
+        if (checkError) {
+            return res.status(500).json({ success: false, message: 'Error en la base de datos.' });
+        }
+
+        if (results.length > 0) {
+            return res.status(400).json({ success: false, message: 'El correo electrónico ya está registrado.' });
+        }
+
+        // Si no hay error, registrar el cliente
+        const sql = 'INSERT INTO clientes (nombre, apellido, email, password) VALUES (?, ?, ?, ?)';
+
+        db.query(sql, [nombre, apellido, email, password], (error, result) => {
+            if (error) {
+                return res.status(500).json({ success: false, message: 'Error al registrar el cliente en la base de datos.' });
+            }
+
+            // Si el registro es exitoso
+            res.json({ success: true, message: 'Cliente registrado correctamente.' });
+        });
+    });
+});
+
 
 // Inicia el servidor
 const PORT = process.env.PORT || 5000;
