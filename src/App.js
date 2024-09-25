@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavBar from './components/NavBar/NavBar'; // Asegúrate de que el nombre del archivo es correcto
-import Header from './components/Header/Header'; // Asegúrate de que el nombre del archivo es correcto
-import Footer from './components/Footer/Footer'; // Asegúrate de que el nombre del archivo es correcto
+import NavBar from './components/NavBar/NavBar';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import ProductGrid from './components/ProductGrid/ProductGrid';
 import ProductoDetalle from './components/ProductoDetalle/ProductoDetalle';
 import Confirmacion from './components/Confirmacion/Confirmacion';
 import Carrito from './components/Carrito/Carrito';
 import DatosCliente from './components/DatosCliente/DatosCliente';
 import RegistroCliente from './components/RegistroCliente/RegistroCliente';
-import FormaPago from './components/FormaPago/FormaPago'; // Asegúrate de que el nombre del archivo es correcto
+import FormaPago from './components/FormaPago/FormaPago';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,14 +25,14 @@ function App() {
         .catch(error => {
           console.error('Error initializing cart:', error);
         })
-        .finally(() => setIsLoading(false)); // Set loading to false once the request is done
+        .finally(() => setIsLoading(false));
     } else {
       setIsLoading(false);
     }
   }, []);
 
   if (isLoading) {
-    return <p>Cargando...</p>; // Mostrar un mensaje de carga o un spinner mientras se inicializa el carrito
+    return <p>Cargando...</p>;
   }
 
   return (

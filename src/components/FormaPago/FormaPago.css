@@ -1,4 +1,3 @@
-/* Estilos generales */
 .contenedor {
     max-width: 600px;
     margin: 50px auto;
@@ -76,7 +75,6 @@ input[type="email"]:focus {
     outline: none;
 }
 
-/* Estilos específicos para los métodos de pago */
 #seccion-tarjeta,
 #seccion-paypal,
 #seccion-transferencia {
@@ -111,7 +109,6 @@ label {
     background-color: #218838;
 }
 
-/* Estilos responsivos */
 @media (max-width: 600px) {
     .contenedor {
         padding: 20px;

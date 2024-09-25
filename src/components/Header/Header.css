@@ -1,18 +1,17 @@
-/* Header.css */
 .header {
     display: flex;
-    justify-content: center; /* Centra el contenido horizontalmente */
-    align-items: center;     /* Centra el contenido verticalmente si el header tiene altura */
+    justify-content: center; 
+    align-items: center;    
     padding: 20px;
     background-color: #f8f9fa;
   }
   
   .header__logo {
-    width: 350px;             /* Ajusta el tamaño de la imagen */
-    height: auto;             /* Mantiene la proporción de la imagen */
-    border: 2px solid #333;   /* Borde alrededor de la imagen */
-    border-radius: 10px;      /* Bordes redondeados */
-    padding: 5px;             /* Espacio entre la imagen y el borde */
+    width: 350px;             
+    height: auto;            
+    border: 2px solid #333; 
+    border-radius: 10px;    
+    padding: 5px;           
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle más estilo */
   }
   
