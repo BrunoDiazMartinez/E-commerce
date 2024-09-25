@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { jsPDF } from 'jspdf';
+import { useNavigate } from 'react-router-dom';
 
 const Confirmacion = () => {
     const [carrito, setCarrito] = useState([]);
     const [total, setTotal] = useState(0);
     const [cliente, setCliente] = useState({});
     const [numeroOrden, setNumeroOrden] = useState('');
+    const navigate = useNavigate(); // Para redireccionar
 
     // Función para generar un número de orden hexadecimal de 6 dígitos
     const generarNumeroOrden = () => {
@@ -69,6 +71,14 @@ const Confirmacion = () => {
 
         // Guardar el PDF
         doc.save('ticket_compra.pdf');
+
+        // Después de generar el ticket, vaciar el localStorage y redirigir a la pantalla principal
+        localStorage.removeItem('carrito');
+        localStorage.removeItem('cliente');
+        localStorage.removeItem('numeroOrden');
+
+        // Redireccionar a la página principal
+        navigate('/');
     };
 
     return (

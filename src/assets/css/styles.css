@@ -79,7 +79,10 @@ h3 {
     justify-content: center;
     margin: 5rem 0;
 }
-
+.header__logo{
+    width: 100px;
+    height: 50px;
+}
 .navegacion {
     background-color: var(--morado);
     padding: 1rem 0;

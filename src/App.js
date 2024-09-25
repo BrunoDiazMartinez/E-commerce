@@ -6,8 +6,8 @@ import Header from './components/Header'; // Asegúrate de que el nombre del arc
 import Footer from './components/Footer'; // Asegúrate de que el nombre del archivo es correcto
 import ProductGrid from './components/ProductGrid';
 import ProductoDetalle from './components/ProductoDetalle';
-import Confirmacion from './components/Confirmacion';
-import Carrito from './components/Carrito';
+import Confirmacion from './components/Confirmacion/Confirmacion';
+import Carrito from './components/Carrito/Carrito';
 import DatosCliente from './components/DatosCliente';
 import RegistroCliente from './components/RegistroCliente';
 import FormaPago from './components/FormaPago'; // Asegúrate de que el nombre del archivo es correcto
