@@ -24,13 +24,13 @@ CREATE TABLE clientes (
 
 -- Tabla de carritos (un único carrito por cliente)
 CREATE TABLE carritos (
-    id INT AUTO_INCREMENT PRIMARY KEY,                  -- ID único del carrito
-    numero_orden VARCHAR(50) NOT NULL UNIQUE,           -- Número único de orden (puede ser alfanumérico)
-    cliente_id INT NOT NULL,                            -- ID del cliente
-    cantidad_productos INT NOT NULL,                    -- Cantidad total de productos en el carrito
-    monto_total DECIMAL(10, 2) NOT NULL,                -- Monto total de la compra
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Fecha y hora de creación del carrito
-    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE  -- Relación con la tabla clientes
+    id INT AUTO_INCREMENT PRIMARY KEY,                  
+    numero_orden VARCHAR(50) NOT NULL UNIQUE,           
+    cliente_id INT NOT NULL,                            
+    cantidad_productos INT NOT NULL,                    
+    monto_total DECIMAL(10, 2) NOT NULL,                
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
 );
 
 

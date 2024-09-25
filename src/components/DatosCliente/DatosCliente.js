@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './DatosCliente.css';
 
 function DatosCliente() {
   const [esCliente, setEsCliente] = useState(null);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Carrito.css';
 
 function Carrito() {
   const [productos, setProductos] = useState([]);
@@ -34,16 +35,13 @@ function Carrito() {
   };
 
   const handleVaciarCarrito = () => {
-    // Vaciar el carrito en localStorage y en el estado
     localStorage.removeItem('carrito');
     setProductos([]);
     setTotal(0);
   };
 
   const handleIrADatosCliente = () => {
-    // Validar si hay al menos un producto en el carrito
     if (productos.length > 0) {
-      // Redirigir a la página de datos del cliente
       window.location.href = '/datos-cliente';
     } else {
       alert('El carrito está vacío. Agrega productos para proceder al pago.');
@@ -51,22 +49,28 @@ function Carrito() {
   };
 
   return (
-    <div>
+    <div className="carrito-container">
       <h1>Carrito de Compras</h1>
       <ul>
         {productos.map(producto => (
           <li key={`${producto.id}-${producto.talla}`}>
-            <img src={producto.imagen} alt={producto.nombre} style={{ width: '50px' }} />
-            {producto.nombre} (Talla: {producto.talla}) - ${producto.precio.toFixed(2)} x {producto.cantidad}
-            <button onClick={() => handleModificarCantidad(producto.id, producto.talla, producto.cantidad + 1)}>+</button>
-            <button onClick={() => handleModificarCantidad(producto.id, producto.talla, Math.max(producto.cantidad - 1, 1))}>-</button>
-            <button onClick={() => handleEliminarProducto(producto.id, producto.talla)}>Eliminar</button>
+            <img src={producto.imagen} alt={producto.nombre} />
+            <div>
+              {producto.nombre} (Talla: {producto.talla}) - ${producto.precio.toFixed(2)} x {producto.cantidad}
+              <div>
+                <button onClick={() => handleModificarCantidad(producto.id, producto.talla, producto.cantidad + 1)}>+</button>
+                <button onClick={() => handleModificarCantidad(producto.id, producto.talla, Math.max(producto.cantidad - 1, 1))}>-</button>
+                <button onClick={() => handleEliminarProducto(producto.id, producto.talla)}>Eliminar</button>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
-      <p>Total: ${total.toFixed(2)}</p>
-      <button onClick={handleVaciarCarrito}>Vaciar Carrito</button>
-      <button onClick={handleIrADatosCliente}>Proceder al Pago</button>
+      <p className="carrito-total">Total: ${total.toFixed(2)}</p>
+      <div className="carrito-actions">
+        <button onClick={handleVaciarCarrito}>Vaciar Carrito</button>
+        <button onClick={handleIrADatosCliente}>Proceder al Pago</button>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,102 @@
+.carrito-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  li img {
+    width: 70px;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  li div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .carrito-total {
+    text-align: right;
+    font-size: 20px;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  .carrito-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .carrito-actions button {
+    width: 48%;
+    padding: 10px;
+    font-size: 18px;
+  }
+  
+  @media (max-width: 600px) {
+    .carrito-container {
+      padding: 10px;
+    }
+  
+    li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .carrito-actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .carrito-actions button {
+      width: 100%;
+    }
+  }
+  

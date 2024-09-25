@@ -1,0 +1,42 @@
+/* ProductGrid.css */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  /* Layout de columnas flexibles */
+  gap: 20px;                                                   /* Espacio entre tarjetas */
+  padding: 20px;
+  background-color: #f4f4f4;                                   /* Fondo gris claro para la sección de productos */
+}
+
+.product-card {
+  height: auto;
+  background-color: #ffffff;                                   /* Fondo blanco para las tarjetas */
+  border: 1px solid #ddd;                                      /* Borde gris claro */
+  border-radius: 15px;                                         /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);                    /* Sombra ligera para darle profundidad */
+  padding: 20px;                                               /* Espacio dentro de la tarjeta */
+  text-align: center;                                          /* Centrar el contenido dentro de la tarjeta */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);                                 /* Efecto hover: levanta ligeramente la tarjeta */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);                   /* Efecto hover: aumenta la sombra */
+}
+
+.product-card img {
+  max-width: auto;                                             /* Imagen no supera el ancho de la tarjeta */
+  height: 150px;                                                /* Mantiene proporciones */
+  border-radius: 10px;                                         /* Bordes redondeados para la imagen */
+  margin-bottom: 10px;
+}
+
+.product-card h2 {
+  font-size: 1.2rem;                                           /* Tamaño de fuente del título */
+  color: #333;                                                 /* Color de la fuente */
+  margin: 10px 0;
+}
+
+.product-card p {
+  font-size: 1rem;                                             /* Tamaño de fuente del precio */
+  color: #888;                                                 /* Color gris para el precio */
+}

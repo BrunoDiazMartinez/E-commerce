@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import './ProductoDetalle.css';
 
 function ProductoDetalle() {
   const { id } = useParams();
@@ -52,11 +53,11 @@ function ProductoDetalle() {
 
   return (
     producto ? (
-      <div>
-        <h1>{producto.name}</h1>
-        <img src={producto.image_url} alt={producto.name} />
-        <p>Precio: ${producto.price.toFixed(2)}</p>
-        <form onSubmit={handleAgregarAlCarrito}>
+      <div className="product-card">
+        <h1 className="product-card__title">{producto.name}</h1>
+        <img className="product-card__image" src={producto.image_url} alt={producto.name} />
+        <p className="product-card__price">Precio: ${producto.price.toFixed(2)}</p>
+        <form onSubmit={handleAgregarAlCarrito} className="product-card__form">
           <label>
             Cantidad:
             <input
@@ -64,11 +65,12 @@ function ProductoDetalle() {
               value={cantidad}
               min="1"
               onChange={(e) => setCantidad(parseInt(e.target.value, 10))}
+              className="product-card__input"
             />
           </label>
           <label>
             Talla:
-            <select value={talla} onChange={(e) => setTalla(e.target.value)}>
+            <select value={talla} onChange={(e) => setTalla(e.target.value)} className="product-card__select">
               <option value="">Selecciona una talla</option>
               <option value="S">S</option>
               <option value="M">M</option>
@@ -76,7 +78,7 @@ function ProductoDetalle() {
               <option value="XL">XL</option>
             </select>
           </label>
-          <button type="submit">Agregar al carrito</button>
+          <button type="submit" className="product-card__button">Agregar al carrito</button>
         </form>
       </div>
     ) : (

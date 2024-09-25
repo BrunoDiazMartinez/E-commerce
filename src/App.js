@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavBar from './components/NavBar'; // Asegúrate de que el nombre del archivo es correcto
-import Header from './components/Header'; // Asegúrate de que el nombre del archivo es correcto
-import Footer from './components/Footer'; // Asegúrate de que el nombre del archivo es correcto
-import ProductGrid from './components/ProductGrid';
-import ProductoDetalle from './components/ProductoDetalle';
+import NavBar from './components/NavBar/NavBar'; // Asegúrate de que el nombre del archivo es correcto
+import Header from './components/Header/Header'; // Asegúrate de que el nombre del archivo es correcto
+import Footer from './components/Footer/Footer'; // Asegúrate de que el nombre del archivo es correcto
+import ProductGrid from './components/ProductGrid/ProductGrid';
+import ProductoDetalle from './components/ProductoDetalle/ProductoDetalle';
 import Confirmacion from './components/Confirmacion/Confirmacion';
 import Carrito from './components/Carrito/Carrito';
-import DatosCliente from './components/DatosCliente';
-import RegistroCliente from './components/RegistroCliente';
-import FormaPago from './components/FormaPago'; // Asegúrate de que el nombre del archivo es correcto
+import DatosCliente from './components/DatosCliente/DatosCliente';
+import RegistroCliente from './components/RegistroCliente/RegistroCliente';
+import FormaPago from './components/FormaPago/FormaPago'; // Asegúrate de que el nombre del archivo es correcto
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
