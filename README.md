@@ -14,7 +14,7 @@
 
 # Tablas de la base de datos: Gestión de productos, clientes, carritos, órdenes de pago y métodos de pago. Se incluyó la relación entre carritos y clientes.
 # Lógica del carrito y órdenes: Implementación de la lógica para manejar un número único de orden, asociar el carrito con un cliente o un usuario provisional, y calcular la cantidad de 
-productos y el total.
+# productos y el total.
 
 ## Flujo de Usuario:
 
