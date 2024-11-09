@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './FormaPago.css';
+import PagoTarjeta from './PagoTarjeta/PagoTarjeta';
+import PagoPayPal from './PagoPaypal/PagoPaypal';
+import PagoTransferencia from './PagoTransferencia/PagoTransferencia';
 import Spinner from '../Spinner/Spinner';
+import './FormaPago.css';
 
 const FormaPago = () => {
     const [formaPago, setFormaPago] = useState('');
@@ -70,11 +73,13 @@ const FormaPago = () => {
                 setIsProcessing(false);
             }
         }, 2000);
+        // Validar y procesar el pago (como en el código original)
     };
 
     return (
         <main className="contenedor">
             <h1>Forma de Pago</h1>
+
             {isProcessing && (
                 <div className="overlay">
                     <div className="spinner-container">
@@ -119,54 +124,9 @@ const FormaPago = () => {
                     </label>
                 </div>
 
-                {/* Campos para Tarjeta de Crédito/Débito */}
-                {formaPago === 'tarjeta' && (
-                    <div id="seccion-tarjeta">
-                        <h3>Pago con Tarjeta de Crédito/Débito</h3>
-                        <div className="formulario__campo">
-                            <label htmlFor="nombre">Nombre del Titular</label>
-                            <input id="nombre" type="text" placeholder="Nombre del titular de la tarjeta" required />
-                        </div>
-
-                        <div className="formulario__campo">
-                            <label htmlFor="numero-tarjeta">Número de Tarjeta</label>
-                            <input id="numero-tarjeta" type="text" placeholder="1234 5678 9101 1121" required />
-                        </div>
-
-                        <div className="formulario__campo">
-                            <label htmlFor="fecha-expiracion">Fecha de Expiración</label>
-                            <input id="fecha-expiracion" type="text" placeholder="MM/AA" required />
-                        </div>
-
-                        <div className="formulario__campo">
-                            <label htmlFor="cvv">CVV</label>
-                            <input id="cvv" type="text" placeholder="123" required />
-                        </div>
-                    </div>
-                )}
-
-                {/* Campos para PayPal */}
-                {formaPago === 'paypal' && (
-                    <div id="seccion-paypal">
-                        <h3>Pago con PayPal</h3>
-                        <div className="formulario__campo">
-                            <label htmlFor="correo-paypal">Correo Electrónico</label>
-                            <input id="correo-paypal" type="email" placeholder="Introduce tu correo de PayPal" required />
-                        </div>
-                    </div>
-                )}
-
-                {formaPago === 'transferencia' && (
-                    <div id="seccion-transferencia">
-                        <h3>Pago con Transferencia Bancaria</h3>
-                        <p>Para completar la compra, realiza la transferencia a la siguiente cuenta bancaria:</p>
-                        <ul>
-                            <li>Banco: Ejemplo Banco</li>
-                            <li>Número de Cuenta: 1234567890</li>
-                            <li>CLABE: 012345678901234567</li>
-                        </ul>
-                    </div>
-                )}
+                {formaPago === 'tarjeta' && <PagoTarjeta />}
+                {formaPago === 'paypal' && <PagoPayPal />}
+                {formaPago === 'transferencia' && <PagoTransferencia />}
 
                 <input className="formulario__submit" type="submit" value="Pagar" />
             </form>
