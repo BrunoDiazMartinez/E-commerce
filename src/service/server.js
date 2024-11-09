@@ -173,6 +173,29 @@ app.post('/registrar-cliente', (req, res) => {
     });
 });
 
+app.post('/crear-orden', async (req, res) => {//bandera apagada
+    const { cliente_id, carrito_id, metodo_pago_id, total } = req.body;
+
+    // Asegúrate de que los datos estén completos
+    if (!cliente_id || !carrito_id || !metodo_pago_id || !total) {
+        return res.status(400).json({ error: 'Faltan datos para crear la orden' });
+    }
+
+    try {
+        // Inserta la orden de pago en la base de datos
+        const query = `
+            INSERT INTO ordenes_pago (cliente_id, carrito_id, metodo_pago_id, total)
+            VALUES (?, ?, ?, ?)
+        `;
+        const [result] = await db.execute(query, [cliente_id, carrito_id, metodo_pago_id, total]);
+
+        res.status(200).json({ message: 'Orden creada con éxito', id: result.insertId });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Hubo un error al crear la orden' });
+    }
+});
+
 
 // Inicia el servidor
 const PORT = process.env.PORT || 5000;

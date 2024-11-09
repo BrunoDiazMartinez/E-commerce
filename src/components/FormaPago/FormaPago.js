@@ -6,10 +6,6 @@ const FormaPago = () => {
     const [formaPago, setFormaPago] = useState('');
     const navigate = useNavigate();
 
-    const handleChange = (event) => {
-        setFormaPago(event.target.value);
-    };
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -86,7 +82,7 @@ const FormaPago = () => {
                             name="forma-pago"
                             value="tarjeta"
                             checked={formaPago === 'tarjeta'}
-                            onChange={handleChange}
+                            onChange={(e) => setFormaPago(e.target.value)} // Aquí se maneja el cambio directamente
                         /> Tarjeta de Crédito/Débito
                     </label>
                 </div>
@@ -97,7 +93,7 @@ const FormaPago = () => {
                             name="forma-pago"
                             value="paypal"
                             checked={formaPago === 'paypal'}
-                            onChange={handleChange}
+                            onChange={(e) => setFormaPago(e.target.value)} // Aquí también
                         /> PayPal
                     </label>
                 </div>
@@ -108,7 +104,7 @@ const FormaPago = () => {
                             name="forma-pago"
                             value="transferencia"
                             checked={formaPago === 'transferencia'}
-                            onChange={handleChange}
+                            onChange={(e) => setFormaPago(e.target.value)} // Aquí también
                         /> Transferencia Bancaria
                     </label>
                 </div>
