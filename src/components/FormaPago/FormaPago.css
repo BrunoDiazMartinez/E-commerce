@@ -38,7 +38,6 @@ ul li {
     margin-bottom: 8px;
 }
 
-/* Estilos para el formulario */
 .formulario__pago {
     display: flex;
     flex-direction: column;
@@ -132,21 +131,19 @@ label {
     }
 }
 
-/* Estilos para el overlay que cubre la pantalla */
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro y semitransparente */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Asegura que el spinner se muestre por encima de todo */
+    z-index: 9999;
 }
 
-/* Contenedor del spinner, centrado */
 .spinner-container {
     display: flex;
     justify-content: center;

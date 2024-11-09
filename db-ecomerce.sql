@@ -177,7 +177,7 @@ INSERT INTO metodos_pago (tipo_pago) VALUES ('tarjeta'), ('paypal'), ('transfere
 -- Insertar detalles para tarjeta
 INSERT INTO tarjeta_pago (metodo_pago_id, nombre_titular, numero_tarjeta, fecha_expiracion, codigo_seguridade, monto)
 VALUES
-  (1, 'Juan Pérez', '4111111111111111', '12/25', '123', 15000000.00),
+  (1, 'Juan Pérez', '4111111111111111', '   ', '123', 15000000.00),
   (1, 'Ana López', '5500000000000004', '11/24', '456', 25000.00),
   (1, 'Carlos García', '340000000000009', '10/23', '789', 4000.00),
   (1, 'María Rodríguez', '6011511111111111', '09/26', '321', 1000000.00);
@@ -195,5 +195,3 @@ VALUES
   (3, 'Banco del Bajío', '2345678901234567', 'Ana López', 1800.00),
   (3, 'BBVA México', '3456789012345678', 'Carlos García', 5000.00),
   (3, 'Banorte', '4567890123456789', 'María Rodríguez', 3000.00);
-
-  

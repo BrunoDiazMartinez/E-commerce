@@ -17,7 +17,6 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* Estilos para el formulario */
 .formulario__registro {
   display: flex;
   flex-direction: column;

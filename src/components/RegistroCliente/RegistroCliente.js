@@ -19,7 +19,6 @@ const RegistroCliente = () => {
         }
 
         try {
-            // Enviar los datos del cliente al backend
             const response = await fetch('http://localhost:5000/registrar-cliente', {
                 method: 'POST',
                 headers: {
@@ -31,10 +30,8 @@ const RegistroCliente = () => {
             const data = await response.json();
 
             if (data.success) {
-                // Registro exitoso, redirigir a la página de pago
-                navigate('/pago');  // Cambiar a la ruta correcta para el pago
+                navigate('/pago');
             } else {
-                // Mostrar un mensaje de error si el registro falla
                 alert('Error al registrar el cliente: ' + data.message);
             }
         } catch (error) {

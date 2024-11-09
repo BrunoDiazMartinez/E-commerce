@@ -6,7 +6,7 @@ const NavBar = () => {
   const location = useLocation();
 
   if (location.pathname === '/confirmacion') {
-    return null; // Si estamos en la página de confirmación, no mostrar el Navbar
+    return null;
   }
   return (
     <nav className="navegacion">

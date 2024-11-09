@@ -1,6 +1,6 @@
 // Spinner.js
 import React from 'react';
-import './Spinner.css'; // Estilos para el spinner
+import './Spinner.css';
 
 const Spinner = () => (
   <div className="spinner-container">

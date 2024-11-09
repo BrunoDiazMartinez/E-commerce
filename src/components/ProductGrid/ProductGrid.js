@@ -1,4 +1,3 @@
-// src/components/ProductGrid.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ProductGrid.css';
@@ -40,7 +39,7 @@ function ProductGrid() {
       .then(data => {
         const productosConPrecio = data.map(producto => ({
           ...producto,
-          price: parseFloat(producto.price) // Asegúrate de que price sea un número
+          price: parseFloat(producto.price)
         }));
         setProductos(productosConPrecio);
       })

@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FormaPago.css';
-import Spinner from '../Spinner/Spinner';  // Asegúrate de importar el componente Spinner
+import Spinner from '../Spinner/Spinner';
 
 const FormaPago = () => {
     const [formaPago, setFormaPago] = useState('');
-    const [isProcessing, setIsProcessing] = useState(false); // Estado para controlar el spinner
+    const [isProcessing, setIsProcessing] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validar que se ha seleccionado un método de pago
         if (!formaPago) {
             alert('Por favor, selecciona un método de pago.');
             return;
         }
 
-        // Datos a enviar
         let datosPago = {};
         if (formaPago === 'tarjeta') {
             datosPago = {
@@ -43,14 +41,11 @@ const FormaPago = () => {
         } else if (formaPago === 'transferencia') {
             datosPago = {
                 metodo: formaPago,
-                // Agrega más datos si es necesario para validación
             };
         }
 
-        // Simular el proceso de pago
-        setIsProcessing(true); // Activar el spinner
+        setIsProcessing(true);
 
-        // Esperar 2 segundos antes de procesar el pago
         setTimeout(async () => {
             try {
                 const response = await fetch('http://localhost:5000/validar-pago', {
@@ -64,7 +59,7 @@ const FormaPago = () => {
                 const resultado = await response.json();
 
                 if (resultado.valido) {
-                    navigate('/confirmacion'); // Redirigir a la página de confirmación
+                    navigate('/confirmacion');
                 } else {
                     alert('Los datos de pago son incorrectos.');
                 }
@@ -72,16 +67,14 @@ const FormaPago = () => {
                 console.error('Error al validar el pago:', error);
                 alert('Error en la validación del pago. Intenta de nuevo.');
             } finally {
-                setIsProcessing(false); // Desactivar el spinner
+                setIsProcessing(false);
             }
-        }, 2000); // Esperar 2 segundos para simular el proceso de pago
+        }, 2000);
     };
 
     return (
         <main className="contenedor">
             <h1>Forma de Pago</h1>
-
-            {/* Mostrar spinner si está procesando el pago */}
             {isProcessing && (
                 <div className="overlay">
                     <div className="spinner-container">
@@ -163,7 +156,6 @@ const FormaPago = () => {
                     </div>
                 )}
 
-                {/* Campos para Transferencia Bancaria */}
                 {formaPago === 'transferencia' && (
                     <div id="seccion-transferencia">
                         <h3>Pago con Transferencia Bancaria</h3>
