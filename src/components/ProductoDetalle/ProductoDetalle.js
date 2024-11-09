@@ -25,7 +25,7 @@ function ProductoDetalle() {
 
   const handleAgregarAlCarrito = (event) => {
     event.preventDefault();
-    
+
     if (!producto || !talla) {
       alert('Selecciona una talla.');
       return;
@@ -45,6 +45,7 @@ function ProductoDetalle() {
         talla,
         cantidad
       });
+      
     }
 
     localStorage.setItem('carrito', JSON.stringify(carritoLocalStorage));
@@ -55,7 +56,11 @@ function ProductoDetalle() {
     producto ? (
       <div className="product-card">
         <h1 className="product-card__title">{producto.name}</h1>
-        <img className="product-card__image" src={producto.image_url} alt={producto.name} />
+        <img
+          className="product-card__image"
+          src={producto.image ? `/${producto.image}` : '/img/img.webp'}
+          alt={producto.name}
+        />
         <p className="product-card__price">Precio: ${producto.price.toFixed(2)}</p>
         <form onSubmit={handleAgregarAlCarrito} className="product-card__form">
           <label>

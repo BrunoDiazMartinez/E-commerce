@@ -8,13 +8,14 @@ function Carrito() {
   useEffect(() => {
     const carritoLocalStorage = JSON.parse(localStorage.getItem('carrito')) || [];
     setProductos(carritoLocalStorage);
+    console.log(localStorage.getItem('carrito'));
 
     const nuevoTotal = carritoLocalStorage.reduce((acc, producto) => acc + (producto.precio * producto.cantidad), 0);
     setTotal(nuevoTotal);
   }, []);
 
   const handleModificarCantidad = (productoId, talla, nuevaCantidad) => {
-    const carritoActualizado = productos.map(p => 
+    const carritoActualizado = productos.map(p =>
       p.id === productoId && p.talla === talla ? { ...p, cantidad: nuevaCantidad } : p
     );
     setProductos(carritoActualizado);
@@ -54,7 +55,8 @@ function Carrito() {
       <ul>
         {productos.map(producto => (
           <li key={`${producto.id}-${producto.talla}`}>
-            <img src={producto.imagen} alt={producto.nombre} />
+            <img src={producto.imagen ? `/${producto.imagen}` : '/img/default.webp'} alt={producto.nombre} />
+            {console.log('Producto Imagen:', producto.imagen)}
             <div>
               {producto.nombre} (Talla: {producto.talla}) - ${producto.precio.toFixed(2)} x {producto.cantidad}
               <div>
