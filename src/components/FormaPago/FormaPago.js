@@ -73,7 +73,6 @@ const FormaPago = () => {
                 setIsProcessing(false);
             }
         }, 2000);
-        // Validar y procesar el pago (como en el código original)
     };
 
     return (
