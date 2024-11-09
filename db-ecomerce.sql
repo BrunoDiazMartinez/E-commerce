@@ -1,4 +1,4 @@
--- Active: 1717617630336@@127.0.0.1@3308
+-- Active: 1730914075835@@127.0.0.1@3308@db_ecommerce
 create database db_ecommerce;
 use db_ecommerce;
 -- Tabla de productos
@@ -178,14 +178,25 @@ INSERT INTO clientes (nombre, apellido, email, password) VALUES
 INSERT INTO metodos_pago (tipo_pago) VALUES ('tarjeta'), ('paypal'), ('transferencia');
 
 -- Insertar detalles para tarjeta
-INSERT INTO tarjeta_pago (metodo_pago_id, nombre_titular, numero_tarjeta, fecha_expiracion, codigo_seguridade, monto) 
-VALUES (1, 'Juan Pérez', '1234567812345678', '12-31', '123', 100.50);
+INSERT INTO tarjeta_pago (metodo_pago_id, nombre_titular, numero_tarjeta, fecha_expiracion, codigo_seguridade, monto)
+VALUES
+  (1, 'Juan Pérez', '4111111111111111', '12/25', '123', 15000000.00),
+  (1, 'Ana López', '5500000000000004', '11/24', '456', 25000.00),
+  (2, 'Carlos García', '340000000000009', '10/23', '789', 4000.00),
+  (3, 'María Rodríguez', '6011511111111111', '09/26', '321', 1000000.00);
 
--- Insertar detalles para PayPal
-INSERT INTO paypal_pago (metodo_pago_id, correo_paypal, monto) 
-VALUES (2, 'juan.perez@example.com', 50.75);
+INSERT INTO paypal_pago (metodo_pago_id, correo_paypal, monto)
+VALUES
+  (3, 'juanperez@example.com', 20000.00),
+  (2, 'analopes@example.com', 120000.00),
+  (1, 'carlosgarcia@example.com', 35000.00),
+  (3, 'mariarodriguez@example.com', 5000.00);
 
--- Insertar detalles para transferencia
-INSERT INTO transferencia_pago (metodo_pago_id, banco, numero_cuenta, nombre_titular, monto) 
-VALUES (3, 'Banco Ejemplo', '1234567890', 'Juan Pérez', 200.00);
+INSERT INTO transferencia_pago (metodo_pago_id, banco, numero_cuenta, nombre_titular, monto)
+VALUES
+  (1, 'Banco Nacional', '1234567890123456', 'Juan Pérez', 10000.00),
+  (2, 'Banco del Bajío', '2345678901234567', 'Ana López', 1800.00),
+  (3, 'BBVA México', '3456789012345678', 'Carlos García', 5000.00),
+  (1, 'Banorte', '4567890123456789', 'María Rodríguez', 3000.00);
 
+  
