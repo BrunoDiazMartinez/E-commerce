@@ -1,0 +1,68 @@
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .filtros div {
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .filtros label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .filtros input,
+  .filtros select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 150px;
+  }
+  
+  /* Contenedor para los botones alineados a la derecha */
+  .filtros-buttons {
+    align-items: center;
+  }
+  
+  /* Botón de aplicar filtros */
+  .filtros button:first-of-type {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .filtros button:first-of-type:hover {
+    background-color: #45a049;
+  }
+  
+  /* Botón de limpiar filtros */
+  .filtros button:last-of-type {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .filtros button:last-of-type:hover {
+    background-color: #e53935;
+  }
+    
