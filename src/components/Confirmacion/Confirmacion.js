@@ -84,7 +84,7 @@ const Confirmacion = () => {
     return (
         <div className="contenedor">
             <main>
-                <h1>Confirmación de Compra</h1>
+                <h1>Compra realizada con éxito</h1>
                 <h2>Resumen del Carrito</h2>
 
                 {carrito.length > 0 ? (
@@ -104,7 +104,7 @@ const Confirmacion = () => {
                 )}
 
                 {/* Botón para generar el PDF */}
-                <button onClick={generarPDF}>Generar Ticket PDF</button>
+                <button onClick={generarPDF}>Generar tu Ticket </button>
             </main>
         </div>
     );

@@ -1,7 +1,13 @@
 import React from 'react';
 import './NavBar.css';
+import { useLocation } from 'react-router-dom';
 
 const NavBar = () => {
+  const location = useLocation();
+
+  if (location.pathname === '/confirmacion') {
+    return null; // Si estamos en la página de confirmación, no mostrar el Navbar
+  }
   return (
     <nav className="navegacion">
       <a href="/" className="navegacion__enlace">Tienda</a>

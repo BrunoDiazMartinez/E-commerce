@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FormaPago.css';
+import Spinner from '../Spinner/Spinner';  // Asegúrate de importar el componente Spinner
 
 const FormaPago = () => {
     const [formaPago, setFormaPago] = useState('');
+    const [isProcessing, setIsProcessing] = useState(false); // Estado para controlar el spinner
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -45,33 +47,48 @@ const FormaPago = () => {
             };
         }
 
-        // Validar datos en la base de datos
-        try {
-            const response = await fetch('http://localhost:5000/validar-pago', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(datosPago),
-            });
+        // Simular el proceso de pago
+        setIsProcessing(true); // Activar el spinner
 
-            const resultado = await response.json();
+        // Esperar 2 segundos antes de procesar el pago
+        setTimeout(async () => {
+            try {
+                const response = await fetch('http://localhost:5000/validar-pago', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(datosPago),
+                });
 
-            if (resultado.valido) {
-                alert('Pago realizado con éxito');
-                navigate('/confirmacion'); // Redirigir a la página de confirmación
-            } else {
-                alert('Los datos de pago son incorrectos.');
+                const resultado = await response.json();
+
+                if (resultado.valido) {
+                    navigate('/confirmacion'); // Redirigir a la página de confirmación
+                } else {
+                    alert('Los datos de pago son incorrectos.');
+                }
+            } catch (error) {
+                console.error('Error al validar el pago:', error);
+                alert('Error en la validación del pago. Intenta de nuevo.');
+            } finally {
+                setIsProcessing(false); // Desactivar el spinner
             }
-        } catch (error) {
-            console.error('Error al validar el pago:', error);
-            alert('Error en la validación del pago. Intenta de nuevo.');
-        }
+        }, 2000); // Esperar 2 segundos para simular el proceso de pago
     };
 
     return (
         <main className="contenedor">
             <h1>Forma de Pago</h1>
+
+            {/* Mostrar spinner si está procesando el pago */}
+            {isProcessing && (
+                <div className="overlay">
+                    <div className="spinner-container">
+                        <Spinner />
+                    </div>
+                </div>
+            )}
 
             <form onSubmit={handleSubmit} className="formulario__pago">
                 <h2>Selecciona una forma de pago:</h2>
@@ -82,7 +99,7 @@ const FormaPago = () => {
                             name="forma-pago"
                             value="tarjeta"
                             checked={formaPago === 'tarjeta'}
-                            onChange={(e) => setFormaPago(e.target.value)} // Aquí se maneja el cambio directamente
+                            onChange={(e) => setFormaPago(e.target.value)}
                         /> Tarjeta de Crédito/Débito
                     </label>
                 </div>
@@ -93,7 +110,7 @@ const FormaPago = () => {
                             name="forma-pago"
                             value="paypal"
                             checked={formaPago === 'paypal'}
-                            onChange={(e) => setFormaPago(e.target.value)} // Aquí también
+                            onChange={(e) => setFormaPago(e.target.value)}
                         /> PayPal
                     </label>
                 </div>
@@ -104,7 +121,7 @@ const FormaPago = () => {
                             name="forma-pago"
                             value="transferencia"
                             checked={formaPago === 'transferencia'}
-                            onChange={(e) => setFormaPago(e.target.value)} // Aquí también
+                            onChange={(e) => setFormaPago(e.target.value)}
                         /> Transferencia Bancaria
                     </label>
                 </div>
