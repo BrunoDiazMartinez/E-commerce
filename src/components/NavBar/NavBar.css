@@ -3,7 +3,7 @@
     background-color: #282c34;
     padding: 10px 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     color: white;
   }
