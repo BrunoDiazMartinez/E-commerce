@@ -35,9 +35,9 @@ const Filtros = ({ onAplicarFiltros }) => {
         <label htmlFor="filtro-precio">Filtrar por precio:</label>
         <select id="filtro-precio" value={precio} onChange={(e) => setPrecio(e.target.value)}>
           <option value="todos">Todos</option>
-          <option value="menos-20">Menos de $20</option>
-          <option value="20-50">$20 - $50</option>
-          <option value="mas-50">Más de $50</option>
+          <option value="menos-500">Menos de $500</option>
+          <option value="500-550">$500-$550</option>
+          <option value="mas-550">Más de $550</option>
         </select>
       </div>
       <div>

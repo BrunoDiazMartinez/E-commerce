@@ -17,9 +17,9 @@ function ProductGrid() {
     return productos.filter(producto => {
       const cumpleNombre = producto.name.toLowerCase().includes(filtros.nombre.toLowerCase());
       const cumplePrecio = filtros.precio === 'todos' || (
-        (filtros.precio === 'menos-20' && producto.price < 20) ||
-        (filtros.precio === '20-50' && producto.price >= 20 && producto.price <= 50) ||
-        (filtros.precio === 'mas-50' && producto.price > 50)
+        (filtros.precio === 'menos-500' && producto.price < 500) ||
+        (filtros.precio === '500-550' && producto.price >= 500 && producto.price <= 550) ||
+        (filtros.precio === 'mas-550' && producto.price > 550)
       );
       const cumpleTipo = filtros.tipo === 'todos' || producto.tipo === filtros.tipo;
       const cumpleCategoria = filtros.categoria === 'todos' || producto.categoria === filtros.categoria;
